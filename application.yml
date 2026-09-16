@@ -1,5 +1,17 @@
 
+
 spring:
+  application:
+    name: razorpay
+  datasource:
+    url: jdbc:postgresql://localhost:5432/razorpay-db
+    username: postgres
+    password: root
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
   jpa:
     hibernate:
       ddl-auto: update
@@ -7,3 +19,97 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  kafka:
+    listener:
+      ack-mode: manual
+    bootstrap-servers: localhost:29092
+    producer:
+      acks: all
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        enable.idempotence: true
+        max.in.flight.requests.per.connection: 5
+        retries: 3
+        spring.json.add.type.headers: false
+    consumer:
+      group-id: razorpay-monolith
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "com.razorpay.*"
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: java.util.LinkedHashMap
+  threads:
+    virtual:
+      enabled: true
+
+vault:
+  master-key: NqcfbJG1zkOfBsNF/wPmlLA7aaOvh9RCHTYYgY/9A2Q=
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+  logging:
+    level:
+      org.apache.kafka.clients: WARN
+      org.apache.kafka.common: WARN
+
+payment:
+  simulator:
+    poll-interval-ms: 5000
+    chaos-mode: SUCCESS
+    methods:
+      CARD:
+        min-delay-seconds: 2
+        max-delay-seconds: 6
+        success-rate: 90
+      UPI:
+        min-delay-seconds: 1
+        max-delay-seconds: 3
+        success-rate: 95
+      NET_BANKING:
+        min-delay-seconds: 4
+        max-delay-seconds: 10
+        success-rate: 80
+
+jwt:
+  secret-key: dont-use-in-prodqwertyuioplkjhgfdsxcvbnmghjk
+
+app:
+  rate-limit:
+    method: fixed
+    use-case:
+      api-key:
+        requests-per-minute: 200
+
+  kafka:
+    topics:
+      payment: payment.events
+      order: order.events
+      refund: refund.events
+      settlement: settlement.events
+
+    webhook:
+      delivery:
+        redis-key: "webhook-retry"
+        poll-batch-size: 100
+
+
+
+
