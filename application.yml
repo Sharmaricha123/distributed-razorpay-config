@@ -43,12 +43,10 @@ spring:
         spring.json.trusted.packages: "com.razorpay.*"
         spring.json.use.type.headers: false
         spring.json.value.default.type: java.util.LinkedHashMap
+
   threads:
     virtual:
       enabled: true
-
-vault:
-  master-key: NqcfbJG1zkOfBsNF/wPmlLA7aaOvh9RCHTYYgY/9A2Q=
 
 
 eureka:
@@ -88,9 +86,6 @@ payment:
         max-delay-seconds: 10
         success-rate: 80
 
-jwt:
-  secret-key: dont-use-in-prodqwertyuioplkjhgfdsxcvbnmghjk
-
 app:
   rate-limit:
     method: fixed
@@ -105,10 +100,6 @@ app:
       refund: refund.events
       settlement: settlement.events
 
-    webhook:
-      delivery:
-        redis-key: "webhook-retry"
-        poll-batch-size: 100
 
 
 
