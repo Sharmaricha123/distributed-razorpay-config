@@ -9,4 +9,4 @@ jwt:
   secret-key: dont-use-in-prodqwertyuioplkjhgfdsxcvbnmghjk
 
 webhook:
-  secret-encryption-keys: jEbSy97ac+f1IDJCbVEM0Z4CJ2VzScYQlJWrkxwyVWs=
+  secret-encryption-key: jEbSy97ac+f1IDJCbVEM0Z4CJ2VzScYQlJWrkxwyVWs=
