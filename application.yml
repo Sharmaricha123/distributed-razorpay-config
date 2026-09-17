@@ -4,7 +4,6 @@ spring:
   application:
     name: razorpay
   datasource:
-    url: jdbc:postgresql://localhost:5432/razorpay-db
     username: postgres
     password: root
   data:
